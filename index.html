@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studio Cicala · Questionario per Fabio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Funnel+Sans:wght@300..800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+<style>
+:root{
+  --cream:#F7F1E8; --paper:#FFFDF9; --sand:#ECE4D6; --line:#DDD5C4;
+  --ink:#22241C; --mut:#5C5F50; --dim:#7E8073;
+  --olive:#4F5E24; --olive-deep:#353F17; --olive-tint:#E2E3CC;
+  --fd:"Funnel Display",system-ui,sans-serif; --fs:"Funnel Sans",system-ui,sans-serif;
+  --m:clamp(20px,5vw,40px); --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--fs);font-size:17px;line-height:1.5}
+a{color:var(--olive-deep)}
+.wrap{max-width:720px;margin:0 auto;padding:0 var(--m)}
+header.top{position:sticky;top:0;z-index:5;background:var(--cream);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:12px}
+.mark{font-family:var(--fd);font-weight:800;font-size:15px;letter-spacing:-.02em}
+.mark span{color:var(--olive)}
+.crumb{font-size:13px;color:var(--mut);text-align:right}
+.progress{height:3px;background:var(--sand)}
+.progress i{display:block;height:100%;width:0;background:var(--olive);transition:width .4s var(--ease)}
+main{padding:40px 0 32px}
+main:focus{outline:none}
+h1{font-family:var(--fd);font-weight:800;font-size:clamp(44px,12vw,72px);line-height:.95;letter-spacing:-.055em;margin:0 0 16px}
+h1 .dot,h2 .dot{color:var(--olive)}
+h2{font-family:var(--fd);font-weight:800;font-size:clamp(30px,7vw,40px);line-height:1.02;letter-spacing:-.04em;margin:0 0 10px}
+h3{font-family:var(--fd);font-weight:700;font-size:20px;letter-spacing:-.02em;margin:0 0 6px}
+.lead{font-size:19px;color:var(--ink);margin:0 0 16px}
+.sub{color:var(--mut);margin:0 0 28px}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--olive);margin:0 0 10px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:20px;margin:0 0 14px}
+.phases{list-style:none;padding:0;margin:0 0 28px;counter-reset:p}
+.phases li{counter-increment:p;display:grid;grid-template-columns:34px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.phases li:last-child{border-bottom:1px solid var(--line)}
+.phases li::before{content:counter(p);font-family:var(--fd);font-weight:800;font-size:20px;color:var(--dim)}
+.phases li.now::before{color:var(--olive)}
+.phases b{display:block;font-weight:700}
+.phases small{color:var(--mut);font-size:15px}
+.tag{display:inline-block;font-size:12px;font-weight:700;background:var(--olive);color:var(--cream);padding:2px 8px;border-radius:99px;margin-left:6px;vertical-align:2px}
+details{background:var(--paper);border:1px solid var(--line);border-radius:6px;margin:0 0 10px}
+summary{cursor:pointer;padding:16px 20px;font-weight:700;list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:48px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--fd);font-size:22px;color:var(--olive)}
+details[open] summary::after{content:"–"}
+details .in{padding:0 20px 16px}
+details ul{margin:0;padding-left:20px}
+details li{margin:0 0 6px}
+.note{font-size:15px;color:var(--mut)}
+.q{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:20px;margin:0 0 14px}
+.q label.ql,.q .ql{display:block;font-weight:700;font-size:17px;margin:0 0 4px}
+.q .hint{font-size:15px;color:var(--mut);margin:0 0 10px}
+.num{font-family:var(--fd);font-weight:800;color:var(--olive);margin-right:6px}
+textarea,input[type=text]{width:100%;font:inherit;font-size:17px;color:var(--ink);background:var(--cream);border:1px solid var(--line);border-radius:6px;padding:12px 14px;min-height:48px}
+textarea{min-height:96px;resize:vertical}
+textarea:focus,input:focus{outline:none;border-color:var(--olive);box-shadow:0 0 0 3px var(--olive-tint)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px;border:0;padding:0}
+.chips legend{padding:0}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.chip span{display:inline-flex;align-items:center;min-height:44px;padding:8px 16px;border:1px solid var(--line);border-radius:99px;background:var(--cream);font-size:16px;transition:background .2s,color .2s,border-color .2s}
+.chip input:checked + span{background:var(--olive);border-color:var(--olive);color:var(--cream)}
+.chip input:focus-visible + span{box-shadow:0 0 0 3px var(--olive-tint);border-color:var(--olive)}
+.fact{display:grid;gap:8px;margin:0}
+.q fieldset.chips{margin:0 0 6px}
+.fact p{margin:0;font-weight:600}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pair label{font-size:14px;color:var(--mut);display:block;margin-bottom:4px}
+.hidden{display:none!important}
+.scale{border:0;padding:0;margin:0 0 14px}
+.scale legend{display:flex;justify-content:space-between;width:100%;font-size:15px;font-weight:600;margin-bottom:6px;padding:0}
+.scale .dots{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.scale .chip span{justify-content:center;width:100%;padding:8px 0}
+.row{border-top:1px solid var(--line);padding:14px 0 4px}
+.row:first-of-type{border-top:0}
+.row h4{margin:0 0 8px;font-family:var(--fd);font-size:15px;color:var(--olive)}
+.row label.fl{display:block;font-size:14px;color:var(--mut);margin:8px 0 4px}
+.count{font-size:14px;color:var(--olive-deep);font-weight:600;margin:6px 0 0}
+.nav{background:var(--cream);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.nav .wrap{display:flex;gap:10px;justify-content:space-between;align-items:center;padding-top:12px;padding-bottom:12px}
+.saved{font-size:13px;color:var(--mut)}
+button,.btn{font:inherit;font-weight:700;font-size:16px;min-height:48px;padding:12px 20px;border-radius:6px;border:1px solid var(--olive-deep);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.primary{background:var(--olive-deep);color:var(--cream)}
+.primary:hover{background:var(--olive)}
+.ghost{background:transparent;color:var(--olive-deep)}
+.ghost:hover{background:var(--olive-tint)}
+button:focus-visible,.btn:focus-visible,summary:focus-visible{outline:3px solid var(--olive);outline-offset:2px}
+.actions{display:grid;gap:10px;margin:24px 0}
+.status{min-height:24px;font-size:15px;color:var(--olive-deep);font-weight:600}
+.sum-step{margin:0 0 22px}
+.sum-step h3{border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:10px}
+.sum-item{margin:0 0 12px}
+.sum-item b{display:block;font-size:15px}
+.sum-item p{margin:2px 0 0;white-space:pre-wrap}
+.sum-item p.empty{color:var(--dim);font-style:italic}
+.copybox{width:100%;min-height:160px;font-size:14px}
+.sign{margin-top:36px;font-family:var(--fd);font-weight:700;font-size:20px;letter-spacing:-.02em}
+.dlg{position:fixed;inset:0;background:rgba(34,36,28,.45);display:flex;align-items:center;justify-content:center;padding:20px;z-index:20}
+.dlg .card{max-width:420px;margin:0}
+.dlg .row{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="mark" aria-label="Luis Fernández Oliva">L<span>.</span>F<span>.</span>O<span>.</span></div>
+    <div class="crumb" id="crumb">Studio Cicala · Fase 1, analisi</div>
+  </div>
+  <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+</header>
+
+<main class="wrap" id="main" tabindex="-1"></main>
+
+<nav class="nav" id="nav" aria-label="Navigazione questionario">
+  <div class="wrap">
+    <button class="ghost" id="prev" type="button">Indietro</button>
+    <span class="saved" id="saved" aria-live="polite"></span>
+    <button class="primary" id="next" type="button">Avanti</button>
+  </div>
+</nav>
+
+<script>
+(function(){
+"use strict";
+var KEY = "cicala-questionario-v1";
+
+/* ---------- Contenuti ---------- */
+var STEPS = [
+ {id:"fatti", title:"Partiamo da quello che so", intro:"Ti scrivo quello che ho capito finora. Dimmi se è giusto o cosa va corretto.", items:[
+  {id:"f1", type:"fact", label:"Lo studio l'ha fondato tuo padre Ferdinando, chirurgo e implantologo, attivo dagli anni Ottanta."},
+  {id:"f2", type:"fact", label:"Lo studio passa a te, ma tuo padre Ferdinando continuerà a lavorarci, anche se meno di prima."},
+  {id:"f3", type:"fact", label:"Sei specializzato in Odontoiatria Pediatrica alla Sapienza e segui anche ortodonzia e conservativa."},
+  {id:"f4", type:"fact", label:"Con i bambini scherzi, li fai ridere e li metti a loro agio."},
+  {id:"f5", type:"fact", label:"Le sedi sono a Capodrise (via Francesco Rao 80) e a Caserta (Corso Trieste)."},
+  {id:"f6", type:"fact", label:"I nuovi pazienti arrivano più o meno in parti uguali da passaparola, Google e MioDottore."},
+  {id:"f7", type:"fact", label:"Al nome Cicala sono legate anche la medicina generale in convenzione e una sede a Caserta che il sito indica come “solo medicina estetica”."},
+  {id:"f8", type:"fact", label:"Il nome Cicala resta."}
+ ]},
+ {id:"storia", title:"Lo studio e la sua storia", intro:"La parte più personale: come vedi lo studio e cosa vuoi portarti dietro.", items:[
+  {id:"q1", n:1, type:"text", label:"In che anno è nato lo studio? C'è un ricordo o un episodio che secondo te lo rappresenta?"},
+  {id:"q2", n:1, type:"text", label:"Se lo studio fosse una persona, come sarebbe? E come non vorresti mai che lo vedessero?"},
+  {id:"q3", n:1, type:"text", label:"Cosa vuoi tenere della storia e dell'esperienza di tuo padre?"},
+  {id:"q3b", n:1, type:"choice", label:"Vuoi che tuo padre compaia nella comunicazione del nuovo studio (sito, insegna, presentazione)?", options:["Sì, in primo piano","Sì, accanto a me","Preferisco di no","Ne parliamo"], note:"Commenti"},
+  {id:"q4", n:1, type:"text", label:"Raccontami un episodio con un bambino che dica bene come lavori.", hint:"Anche piccolo: una frase, una reazione, qualcosa che ti ha detto un genitore."},
+  {id:"q5", n:1, type:"choice", label:"Come vorresti che si chiamasse lo studio?", options:["Studio Dentistico Cicala","Studio Cicala","Dottor Cicala","Non so ancora"], note:"Altro o commenti"}
+ ]},
+ {id:"attivita", title:"Cosa ci sarà sotto il nome Cicala", intro:"Mi serve capire cosa dovrà comunicare la nuova identità e cosa no.", items:[
+  {id:"q6", n:1, type:"choice", label:"La medicina generale in convenzione continuerà?", options:["Sì","No","Non lo so ancora"], note:"Deve stare sotto lo stesso marchio dello studio dentistico?"},
+  {id:"q7", n:1, type:"text", label:"La sede di Caserta indicata come “solo medicina estetica”: chi la segue? Deve far parte della nuova identità?"},
+  {id:"q9", n:1, type:"text", label:"Come vi dividerete il lavoro tu e tuo padre? Quali prestazioni continuerà a seguire lui?", hint:"Per esempio implantologia, chirurgia, protesi."},
+  {id:"q10", n:1, type:"text", label:"Chi lavora con te in studio?", hint:"Assistenti, igienista, altri medici, la dott.ssa Grillo… Mi serve anche per divise e cartellini."}
+ ]},
+ {id:"pubblico", title:"Per chi è lo studio", intro:"Chi vuoi che entri dalla porta, e cosa deve sentire.", items:[
+  {id:"q11", n:1, type:"text", label:"Descrivimi il paziente ideale per te. Anzi, la famiglia ideale.", hint:"Età dei figli, dove vivono, cosa cercano, cosa li preoccupa."},
+  {id:"q12", n:1, type:"choice", label:"Tra tre anni, che parte dei tuoi pazienti vorresti che fossero bambini?", options:["Meno di un quarto","Circa un quarto","Circa la metà","Più della metà","Non so"]},
+  {id:"q13", n:1, type:"text", label:"Quali prestazioni vorresti che lo studio facesse conoscere di più?"},
+  {id:"q14", n:1, type:"choice", label:"Come vorresti che le persone percepissero lo studio?", options:["Accessibile","Nella media","Curato e di qualità","Esclusivo"], note:"Commenti"},
+  {id:"q15", n:1, type:"text", label:"Come pensi di raccontare il cambio ai pazienti storici di tuo padre? Cosa cambierà per loro?"}
+ ]},
+ {id:"carattere", title:"Carattere e gusti", intro:"Qui non ci sono risposte giuste: mi interessa il tuo istinto.", items:[
+  {id:"g1", n:1, type:"text", label:"Tre parole per come vorresti che le persone descrivessero lo studio."},
+  {id:"g2", n:1, type:"scale", label:"Dove metteresti lo studio tra questi opposti?", hint:"1 = tutto a sinistra, 5 = tutto a destra.", pairs:[["Classico","Moderno"],["Serio","Giocoso"],["Clinico","Caldo"],["Essenziale","Ricco di dettagli"],["Tranquillo","Energico"],["Tradizionale","Sorprendente"]]},
+  {id:"g3", n:1, type:"choice", label:"Il bianco e l'azzurro sono…", options:["Da tenere per forza","Un punto di partenza","Sono aperto a cambiare"], note:"Colori che ti piacciono o che vuoi evitare"},
+  {id:"g4", n:1, type:"multi", label:"Del logo attuale cosa vorresti tenere?", options:["Niente","Il simbolo","Le lettere","I colori","Non so"], note:"Perché?"},
+  {id:"g5", n:1, type:"text", label:"Come immagini la mascotte cicala? Che carattere ha, come si muove, come parla?"},
+  {id:"g6", n:1, type:"multi", label:"Dove vorresti vedere la mascotte?", options:["Sala d'attesa","Angolo bimbi","Schermi","Sito","Social","Gadget","Divise","Diplomi e attestati","Insegna"], note:"Altro"},
+  {id:"g7", n:1, type:"text", label:"Ci sono marchi, negozi, locali o prodotti, anche fuori dal settore, che ti piacciono per come si presentano?", hint:"Un bar, un brand di abbigliamento, un'app, una scuola… Dimmi anche perché."}
+ ]},
+ {id:"applicazioni", title:"Dove vivrà l'identità", intro:"Segna tutto quello che pensi di fare, anche più avanti. Mi serve per progettare un sistema che funzioni ovunque.", items:[
+  {id:"a1", n:1, type:"multi", label:"Divise: cosa vorresti personalizzare?", options:["Casacche","Pantaloni","Camici","Cuffie","Scarpe","Logo ricamato","Nome sulla divisa","Colori diversi per ruolo"], note:"Come le immagini? Colori, stile, cosa non ti piace delle divise di oggi"},
+  {id:"a2", n:1, type:"multi", label:"Gadget e regali per i pazienti", options:["Spazzolini","Adesivi","Diploma del primo dente","Passaporto con timbri","Kit igiene","Palloncini","Matite e colori","Borsine","Magneti promemoria"], note:"Altre idee, anche per gli adulti"},
+  {id:"a3", n:1, type:"multi", label:"Cartoleria e stampati", options:["Biglietti da visita","Cartoncino appuntamenti","Carta intestata","Buste","Cartelline per preventivi","Moduli e consensi","Ricettario","Volantini informativi"], note:"Commenti"},
+  {id:"a4", n:1, type:"multi", label:"Ambienti e segnaletica", options:["Insegna esterna","Insegna luminosa a messaggi","Targa","Vetrofanie","Indicazioni e porte","Pareti decorate","Quadri","Angolo bimbi","Schermi in sala d'attesa"], note:"Hai in mente lavori o rinnovi negli ambienti?"},
+  {id:"a5", n:1, type:"multi", label:"Canali digitali", options:["Sito","Instagram","Facebook","TikTok","Scheda Google","MioDottore","WhatsApp Business","Newsletter"], note:"Chi pensi che li curerà?"},
+  {id:"a6", n:1, type:"text", label:"Da cosa vorresti partire? Qual è la cosa più urgente?"},
+  {id:"a7", n:1, type:"short", label:"Entro quando vorresti presentare il nuovo studio?", hint:"Un mese o una stagione."}
+ ]},
+ {id:"concorrenza", title:"Concorrenti e riferimenti", intro:"Voglio guardare la concorrenza con i tuoi occhi. Indicami almeno 5 studi della zona che consideri concorrenti, e 1 o 2 cliniche, anche lontane, che ti piacciono.", items:[
+  {id:"c1", n:1, type:"rows", label:"Gli studi che consideri concorrenti", hint:"Almeno 5. Va bene anche solo il nome e la città.", min:5, max:10, fields:[["nome","Nome dello studio"],["dove","Città, sito o pagina social"],["nota","Cosa noti di loro, in bene o in male"]]},
+  {id:"c2", n:1, type:"rows", label:"Le cliniche che ti piacciono", hint:"1 o 2, anche fuori zona o all'estero.", min:1, show:2, max:4, fields:[["nome","Nome della clinica"],["dove","Sito, Instagram o città"],["cosa","Cosa ti piace","chips",["Stile","Logo e grafica","Colori","Pubblicità","Social","Sito","Ambienti","Approccio con i pazienti"]],["nota","Perché ti piace"]]},
+  {id:"c3", n:1, type:"text", label:"C'è uno studio a cui proprio non vorresti somigliare? Perché?"}
+ ]},
+ {id:"materiali", title:"Cose da mandarmi", intro:"Segna quello che riesci a mandarmi, anche su WhatsApp. Non serve tutto subito.", items:[
+  {id:"m1", type:"check", label:"Il logo attuale in alta risoluzione (il file originale, se ce l'hai)"},
+  {id:"m2", type:"check", label:"Foto dello studio, delle sale e del team (vanno bene anche col telefono)"},
+  {id:"m4", type:"check", label:"Materiali stampati che usate oggi: biglietti, carta intestata, moduli, cartelli"},
+  {id:"m6", type:"check", label:"Le pagine social dello studio, se ci sono"},
+  {id:"m7", type:"check", label:"Immagini che ti piacciono: screenshot, foto, pubblicità, qualsiasi cosa ti abbia colpito"},
+  {id:"q21", n:1, type:"choice", label:"Riusciresti a coinvolgere 3–4 pazienti storici di tuo padre e 3–4 genitori per una chiacchierata di 10 minuti con me?", options:["Sì","Forse","Difficile"], note:"Se hai già qualcuno in mente, scrivilo qui"},
+  {id:"q22", n:1, type:"text", label:"C'è altro che vuoi dirmi?"}
+ ]}
+];
+
+(function(){ var c = 0; STEPS.forEach(function(s){ s.items.forEach(function(it){ if (it.n) it.n = ++c; }); }); })();
+
+/* ---------- Stato ---------- */
+var state = {step:-1, a:{}};
+var storageOk = true;
+try { var raw = localStorage.getItem(KEY); if (raw) { var p = JSON.parse(raw); if (p && typeof p === "object") { state.a = p.a || {}; state.step = typeof p.step === "number" ? p.step : -1; } } } catch(e){ storageOk = false; }
+var saveTimer = null;
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(function(){
+    try { localStorage.setItem(KEY, JSON.stringify(state)); setSaved("Salvato su questo dispositivo"); } catch(e){ storageOk = false; setSaved(""); }
+  }, 300);
+}
+function setSaved(t){ document.getElementById("saved").textContent = t; }
+
+/* ---------- Helpers DOM ---------- */
+function el(tag, attrs, kids){
+  var n = document.createElement(tag);
+  if (attrs) for (var k in attrs){ if (k === "text") n.textContent = attrs[k]; else if (k === "class") n.className = attrs[k]; else n.setAttribute(k, attrs[k]); }
+  (kids||[]).forEach(function(c){ if (c) n.appendChild(c); });
+  return n;
+}
+function get(id){ return state.a[id]; }
+function set(id, v){ state.a[id] = v; save(); }
+function obj(id){ var v = state.a[id]; return (v && typeof v === "object") ? v : {}; }
+
+var main = document.getElementById("main");
+var prevB = document.getElementById("prev"), nextB = document.getElementById("next");
+var TOTAL = STEPS.length;
+
+/* ---------- Intro ---------- */
+function renderIntro(){
+  main.innerHTML = "";
+  main.appendChild(el("p",{class:"eyebrow",text:"Rebranding Studio Cicala"}));
+  var h = el("h1"); h.appendChild(document.createTextNode("Ciao Fabio")); h.appendChild(el("span",{class:"dot",text:"."})); main.appendChild(h);
+  main.appendChild(el("p",{class:"lead",text:"Ho messo in ordine quello che ci siamo detti sul nuovo studio. Prima di passare alle idee mi servono alcune risposte da te."}));
+  main.appendChild(el("p",{class:"sub",text:"Sono 8 passi, ci vogliono circa 30 minuti. Le risposte si salvano da sole su questo telefono o computer: puoi fermarti e riprendere quando vuoi. Rispondi come parleresti a me, anche con poche parole. Se una cosa non la sai ancora, scrivilo pure. Alla fine puoi scaricare un PDF o mandarmi tutto su WhatsApp."}));
+
+  main.appendChild(el("h3",{text:"Dove siamo"}));
+  var ph = [["Analisi","Conoscere lo studio, i pazienti e gli studi della zona.",true],["Strategia","Decidere insieme chi è lo studio, per chi lavora e cosa lo rende diverso."],["Parole","Nomi, modo di comunicare, messaggi."],["Immagine","Logo, colori, caratteri, mascotte."],["Applicazioni","Insegna, sala d'attesa, divise, sito, profili online."]];
+  var ol = el("ol",{class:"phases"});
+  ph.forEach(function(x){ var li = el("li",{class:x[2]?"now":""}); var d = el("div"); var b = el("b",{text:x[0]}); if (x[2]) b.appendChild(el("span",{class:"tag",text:"ora"})); d.appendChild(b); d.appendChild(el("small",{text:x[1]})); li.appendChild(d); ol.appendChild(li); });
+  main.appendChild(ol);
+
+  main.appendChild(el("h3",{text:"Cosa ho raccolto finora"}));
+  main.appendChild(el("p",{class:"note",text:"Solo quello che ho visto, senza valutazioni: quelle le facciamo insieme. Tutte le domande servono a costruire la nuova identità dello studio."}));
+  main.appendChild(details("Le idee del nostro primo incontro",[
+    "Valori: approccio umano e cura del paziente; uno studio rassicurante, di fiducia, familiare.",
+    "Colori: bianco e azzurro, anche nelle divise e nei quadri.",
+    "Pubblico: valorizzare la pediatria senza dimenticare gli adulti.",
+    "Angolo bambini con tavolino, album, pastelli e i loro disegni al muro.",
+    "Sala d'attesa con schermi, infografiche e una mascotte: una cicala dentista.",
+    "Insegna luminosa (1 m × 0,7 m) con messaggi brevi a rotazione.",
+    "Sito pulito e intuitivo, con prenotazione, casi clinici, recensioni, servizi chiari, foto vere e prezzo solo della visita base."
+  ]));
+  main.appendChild(details("Come appare oggi lo studio online",[
+    "Sito dottorcicala.com: in primo piano implantologia, tecnologia e allineatori; la pediatria è nel tuo curriculum ma non come servizio. Mancano indirizzi, orari, foto del team e recensioni.",
+    "MioDottore: un solo profilo a nome di tuo padre, con 4 indirizzi e 49 recensioni, che mette insieme medicina generale, implantologia e pediatria.",
+    "I pazienti su MioDottore citano soprattutto puntualità, spiegazioni chiare e attenzione durante la visita.",
+    "Google: una sola recensione, 4 stelle."
+  ]));
+  var hasAny = Object.keys(state.a).length > 0;
+  prevB.classList.add("hidden");
+  nextB.textContent = hasAny ? "Riprendi da dove eri" : "Iniziamo";
+  updateChrome();
+}
+function details(title, lines){
+  var d = el("details"); d.appendChild(el("summary",{text:title}));
+  var ul = el("ul"); lines.forEach(function(t){ ul.appendChild(el("li",{text:t})); });
+  d.appendChild(el("div",{class:"in"},[ul])); return d;
+}
+
+/* ---------- Step ---------- */
+function renderStep(i){
+  var s = STEPS[i];
+  main.innerHTML = "";
+  main.appendChild(el("p",{class:"eyebrow",text:"Passo "+(i+1)+" di "+TOTAL}));
+  var h = el("h2"); h.appendChild(document.createTextNode(s.title)); h.appendChild(el("span",{class:"dot",text:"."})); main.appendChild(h);
+  main.appendChild(el("p",{class:"sub",text:s.intro}));
+  s.items.forEach(function(it){ main.appendChild(renderItem(it)); });
+  prevB.classList.remove("hidden");
+  nextB.textContent = i === TOTAL-1 ? "Rivedi e invia" : "Avanti";
+  updateChrome();
+}
+
+function labelNode(it, forId){
+  var l = el(forId ? "label" : "p", {class:"ql"});
+  if (forId) l.setAttribute("for", forId);
+  if (it.n) l.appendChild(el("span",{class:"num",text:it.n+"."}));
+  l.appendChild(document.createTextNode(it.label));
+  return l;
+}
+
+function renderItem(it){
+  var box = el("div",{class:"q"});
+  var fid = "in-"+it.id;
+  if (it.type === "text" || it.type === "short"){
+    box.appendChild(labelNode(it, fid));
+    if (it.hint) box.appendChild(el("p",{class:"hint",id:fid+"-h",text:it.hint}));
+    var f = el(it.type === "text" ? "textarea" : "input", {id:fid});
+    if (it.type === "short") f.type = "text";
+    if (it.hint) f.setAttribute("aria-describedby", fid+"-h");
+    f.value = get(it.id) || "";
+    f.addEventListener("input", function(){ set(it.id, f.value); });
+    box.appendChild(f);
+  }
+  else if (it.type === "pair"){
+    box.appendChild(labelNode(it));
+    var v = obj(it.id); var g = el("div",{class:"pair"});
+    it.fields.forEach(function(fd){
+      var id = fid+"-"+fd[0]; var w = el("div");
+      w.appendChild(el("label",{for:id,text:fd[1]}));
+      var inp = el("input",{id:id,type:"text",inputmode:"numeric"}); inp.value = v[fd[0]] || "";
+      inp.addEventListener("input", function(){ var o = obj(it.id); o[fd[0]] = inp.value; set(it.id, o); });
+      w.appendChild(inp); g.appendChild(w);
+    });
+    box.appendChild(g);
+  }
+  else if (it.type === "choice" || it.type === "multi"){
+    var multi = it.type === "multi";
+    var fs = el("fieldset",{class:"chips"});
+    var lg = el("legend"); lg.appendChild(labelNode(it)); fs.appendChild(lg);
+    var cur = obj(it.id);
+    var hintN = it.hint ? el("p",{class:"hint",text:it.hint}) : null;
+    var wrap = el("div",{class:"chips"});
+    it.options.forEach(function(o, k){
+      var c = el("label",{class:"chip"});
+      var inp = el("input",{type:multi?"checkbox":"radio",name:fid,value:o});
+      if (multi ? (cur.sel||[]).indexOf(o) > -1 : cur.sel === o) inp.checked = true;
+      inp.addEventListener("change", function(){
+        var x = obj(it.id);
+        if (multi){ var arr = (x.sel||[]).slice(); var p = arr.indexOf(o); if (inp.checked && p<0) arr.push(o); if (!inp.checked && p>-1) arr.splice(p,1); x.sel = arr; }
+        else x.sel = o;
+        set(it.id, x);
+      });
+      c.appendChild(inp); c.appendChild(el("span",{text:o})); wrap.appendChild(c);
+    });
+    box.appendChild(fs);
+    if (hintN) fs.appendChild(hintN);
+    fs.appendChild(wrap);
+    if (it.note){
+      var nid = fid+"-note";
+      box.appendChild(el("label",{for:nid,class:"hint",text:it.note}));
+      var t = el("textarea",{id:nid}); t.style.minHeight = "64px"; t.value = cur.note || "";
+      t.addEventListener("input", function(){ var x = obj(it.id); x.note = t.value; set(it.id, x); });
+      box.appendChild(t);
+    }
+  }
+  else if (it.type === "fact"){
+    var fs2 = el("fieldset",{class:"chips fact"});
+    var lg2 = el("legend"); lg2.appendChild(el("p",{text:it.label})); fs2.appendChild(lg2);
+    var cur2 = obj(it.id);
+    var row = el("div",{class:"chips"});
+    var nid2 = fid+"-note";
+    var noteL = el("label",{for:nid2,class:"hint",text:"Cosa va corretto?"});
+    var ta = el("textarea",{id:nid2}); ta.style.minHeight = "64px"; ta.value = cur2.note || "";
+    function toggle(){ var show = obj(it.id).sel === "Da correggere"; noteL.classList.toggle("hidden", !show); ta.classList.toggle("hidden", !show); }
+    ["Giusto","Da correggere"].forEach(function(o){
+      var c = el("label",{class:"chip"});
+      var inp = el("input",{type:"radio",name:fid,value:o}); if (cur2.sel === o) inp.checked = true;
+      inp.addEventListener("change", function(){ var x = obj(it.id); x.sel = o; set(it.id, x); toggle(); if (o === "Da correggere") ta.focus(); });
+      c.appendChild(inp); c.appendChild(el("span",{text:o})); row.appendChild(c);
+    });
+    ta.addEventListener("input", function(){ var x = obj(it.id); x.note = ta.value; set(it.id, x); });
+    fs2.appendChild(row); box.appendChild(fs2); box.appendChild(noteL); box.appendChild(ta); toggle();
+  }
+  else if (it.type === "scale"){
+    box.appendChild(labelNode(it));
+    if (it.hint) box.appendChild(el("p",{class:"hint",text:it.hint}));
+    it.pairs.forEach(function(pr, pi){
+      var fs = el("fieldset",{class:"scale"});
+      var lg = el("legend"); lg.appendChild(el("span",{text:pr[0]})); lg.appendChild(el("span",{text:pr[1]})); fs.appendChild(lg);
+      var dots = el("div",{class:"dots"});
+      for (var k=1;k<=5;k++){ (function(k){
+        var c = el("label",{class:"chip"});
+        var inp = el("input",{type:"radio",name:fid+"-"+pi,value:String(k),"aria-label":k+" su 5, da "+pr[0]+" a "+pr[1]});
+        if (obj(it.id)[pi] === k) inp.checked = true;
+        inp.addEventListener("change", function(){ var x = obj(it.id); x[pi] = k; set(it.id, x); });
+        c.appendChild(inp); c.appendChild(el("span",{text:String(k)})); dots.appendChild(c);
+      })(k); }
+      fs.appendChild(dots); box.appendChild(fs);
+    });
+  }
+  else if (it.type === "rows"){
+    box.appendChild(labelNode(it));
+    if (it.hint) box.appendChild(el("p",{class:"hint",text:it.hint}));
+    var holder = el("div"); box.appendChild(holder);
+    var count = el("p",{class:"count","aria-live":"polite"});
+    var addB = el("button",{class:"ghost",type:"button",text:"Aggiungi un altro"}); addB.style.marginTop = "10px";
+    function filled(){ return (obj(it.id).rows||[]).filter(function(r){ return r && (r.nome||"").trim(); }).length; }
+    function updCount(){ var f = filled(); count.textContent = f >= it.min ? f+" inseriti. Perfetto." : f+" di "+it.min+" inseriti"; }
+    function shown(){ var x = obj(it.id); return Math.max(it.show || it.min, x.shown || 0, (x.rows||[]).length); }
+    function draw(){
+      holder.innerHTML = "";
+      var n = shown();
+      for (var r=0;r<n;r++){ (function(r){
+        var row = el("div",{class:"row"});
+        row.appendChild(el("h4",{text:String(r+1)}));
+        it.fields.forEach(function(fd){
+          var x = obj(it.id); var rows = x.rows || []; var cur = rows[r] || {};
+          var id = fid+"-"+r+"-"+fd[0];
+          if (fd[2] === "chips"){
+            var fs = el("fieldset",{class:"chips"}); var lg = el("legend",{class:"fl",text:fd[1]}); lg.style.fontSize="14px"; lg.style.color="var(--mut)"; fs.appendChild(lg);
+            fd[3].forEach(function(o){
+              var c = el("label",{class:"chip"}); var inp = el("input",{type:"checkbox",value:o});
+              if ((cur[fd[0]]||[]).indexOf(o) > -1) inp.checked = true;
+              inp.addEventListener("change", function(){ var x = obj(it.id); x.rows = x.rows || []; var rr = x.rows[r] = x.rows[r] || {}; var arr = (rr[fd[0]]||[]).slice(); var p = arr.indexOf(o); if (inp.checked && p<0) arr.push(o); if (!inp.checked && p>-1) arr.splice(p,1); rr[fd[0]] = arr; set(it.id, x); });
+              c.appendChild(inp); c.appendChild(el("span",{text:o})); fs.appendChild(c);
+            });
+            row.appendChild(fs);
+          } else {
+            row.appendChild(el("label",{class:"fl",for:id,text:fd[1]}));
+            var inp = el(fd[0]==="nota" ? "textarea" : "input",{id:id}); if (fd[0]!=="nota") inp.type = "text"; else inp.style.minHeight = "64px";
+            inp.value = cur[fd[0]] || "";
+            inp.addEventListener("input", function(){ var x = obj(it.id); x.rows = x.rows || []; var rr = x.rows[r] = x.rows[r] || {}; rr[fd[0]] = inp.value; set(it.id, x); updCount(); });
+            row.appendChild(inp);
+          }
+        });
+        holder.appendChild(row);
+      })(r); }
+      addB.classList.toggle("hidden", n >= it.max);
+      updCount();
+    }
+    addB.addEventListener("click", function(){ var x = obj(it.id); x.shown = shown() + 1; set(it.id, x); draw(); var ins = holder.querySelectorAll("input[type=text]"); });
+    draw();
+    box.appendChild(count); box.appendChild(addB);
+  }
+  else if (it.type === "check"){
+    var cur3 = obj(it.id);
+    var cid = fid+"-c";
+    var c3 = el("label",{class:"chip"});
+    var cb = el("input",{type:"checkbox",id:cid}); cb.checked = !!cur3.on;
+    var sp = el("span",{text:"Te lo mando"});
+    cb.addEventListener("change", function(){ var x = obj(it.id); x.on = cb.checked; set(it.id, x); });
+    c3.appendChild(cb); c3.appendChild(sp);
+    var p = el("p",{class:"ql",text:it.label});
+    box.appendChild(p); box.appendChild(c3);
+    cb.setAttribute("aria-label", "Te lo mando: "+it.label);
+  }
+  return box;
+}
+
+/* ---------- Testo delle risposte ---------- */
+function answerText(it){
+  var v = state.a[it.id];
+  if (it.type === "text" || it.type === "short") return (v||"").trim();
+  v = (v && typeof v === "object") ? v : {};
+  if (it.type === "pair"){ var out=[]; it.fields.forEach(function(f){ if ((v[f[0]]||"").trim()) out.push(f[1]+": "+v[f[0]].trim()); }); return out.join(" · "); }
+  if (it.type === "choice"){ return [v.sel||"", (v.note||"").trim()].filter(Boolean).join(" — "); }
+  if (it.type === "multi"){ return [(v.sel||[]).join(", "), (v.note||"").trim()].filter(Boolean).join(" — "); }
+  if (it.type === "fact"){ if (!v.sel) return ""; return v.sel === "Giusto" ? "Giusto" : "Da correggere" + ((v.note||"").trim() ? ": "+v.note.trim() : ""); }
+  if (it.type === "check"){ return v.on ? "Te lo mando" : ""; }
+  if (it.type === "scale"){ var o=[]; it.pairs.forEach(function(pr,pi){ if (v[pi]) o.push(pr[0]+" "+v[pi]+"/5 "+pr[1]); }); return o.join("\n"); }
+  if (it.type === "rows"){ var o2=[]; (v.rows||[]).forEach(function(r,k){ if (!r) return; var parts=[]; it.fields.forEach(function(fd){ var val = r[fd[0]]; if (Array.isArray(val)) val = val.join(", "); if (val && String(val).trim()) parts.push(((fd[0]==="nome"||fd[0]==="dove")?"":fd[1]+": ")+String(val).trim()); }); if (parts.length) o2.push((k+1)+". "+parts.join(" · ")); }); return o2.join("\n"); }
+  return "";
+}
+function itemLabel(it){ return (it.n ? it.n+". " : "") + it.label; }
+function dateIt(){ try { return new Date().toLocaleDateString("it-IT",{day:"numeric",month:"long",year:"numeric"}); } catch(e){ return new Date().toISOString().slice(0,10); } }
+function plainText(){
+  var L = ["STUDIO CICALA — Questionario di analisi","Risposte di Fabio Cicala · "+dateIt(),""];
+  STEPS.forEach(function(s){
+    L.push("== "+s.title.toUpperCase()+" ==");
+    s.items.forEach(function(it){ var a = answerText(it); L.push("• "+itemLabel(it)); L.push("  "+(a || "(nessuna risposta)")); });
+    L.push("");
+  });
+  return L.join("\n");
+}
+
+/* ---------- Riepilogo ---------- */
+var downloads = null, inArtifact = !!window.claude;
+if (inArtifact && typeof window.claude.use === "function"){
+  window.claude.use("downloads").then(function(d){ downloads = d; refreshPdfButton(); }).catch(function(){ downloads = null; refreshPdfButton(); });
+}
+function refreshPdfButton(){
+  var b = document.getElementById("pdfBtn"); if (!b) return;
+  var noteEl = document.getElementById("pdfNote");
+  var can = !inArtifact || !!downloads;
+  b.classList.toggle("hidden", !can);
+  if (noteEl) noteEl.classList.toggle("hidden", can);
+}
+
+function renderSummary(){
+  main.innerHTML = "";
+  main.appendChild(el("p",{class:"eyebrow",text:"Ultimo passo"}));
+  var h = el("h2"); h.appendChild(document.createTextNode("Grazie, Fabio")); h.appendChild(el("span",{class:"dot",text:"."})); main.appendChild(h);
+  main.appendChild(el("p",{class:"sub",text:"Ricontrolla le risposte qui sotto. Se vuoi cambiare qualcosa torna indietro: niente si perde. Poi mandamele nel modo che preferisci."}));
+
+  var status = el("p",{class:"status",role:"status","aria-live":"polite"});
+  var acts = el("div",{class:"actions"});
+  var pdfBtn = el("button",{class:"primary",type:"button",id:"pdfBtn",text:"Scarica il PDF"});
+  pdfBtn.addEventListener("click", function(){ makePdf(status); });
+  var wa = el("a",{class:"btn ghost",href:"https://wa.me/?text="+encodeURIComponent(plainText()),target:"_blank",rel:"noopener",text:"Mandami le risposte su WhatsApp"});
+  var copyBtn = el("button",{class:"ghost",type:"button",text:"Copia le risposte"});
+  var box = el("textarea",{class:"copybox hidden","aria-label":"Testo delle risposte da copiare",readonly:"readonly"});
+  copyBtn.addEventListener("click", function(){
+    var t = plainText();
+    var done = function(){ status.textContent = "Copiato. Ora incollalo in un messaggio per me."; };
+    try {
+      navigator.clipboard.writeText(t).then(done, function(){ box.value = t; box.classList.remove("hidden"); box.focus(); box.select(); status.textContent = "Seleziona il testo qui sotto e copialo."; });
+    } catch(e){ box.value = t; box.classList.remove("hidden"); box.focus(); box.select(); status.textContent = "Seleziona il testo qui sotto e copialo."; }
+  });
+  var pdfNote = el("p",{class:"note hidden",id:"pdfNote",text:"Il PDF qui non si può scaricare: usa WhatsApp o Copia le risposte."});
+  acts.appendChild(pdfBtn); acts.appendChild(wa); acts.appendChild(copyBtn);
+  main.appendChild(acts); main.appendChild(pdfNote); main.appendChild(status); main.appendChild(box);
+
+  STEPS.forEach(function(s){
+    var sec = el("section",{class:"sum-step"});
+    sec.appendChild(el("h3",{text:s.title}));
+    s.items.forEach(function(it){
+      var a = answerText(it);
+      var d = el("div",{class:"sum-item"});
+      d.appendChild(el("b",{text:itemLabel(it)}));
+      d.appendChild(el("p",{class:a?"":"empty",text:a||"Nessuna risposta"}));
+      sec.appendChild(d);
+    });
+    main.appendChild(sec);
+  });
+  var sign = el("p",{class:"sign"}); sign.appendChild(document.createTextNode("Un abbraccio, Luis")); sign.appendChild(el("span",{class:"dot",text:"."})); sign.querySelector(".dot").style.color = "var(--olive)";
+  main.appendChild(sign);
+  var reset = el("button",{class:"ghost",type:"button",text:"Cancella tutte le risposte"}); reset.style.marginTop = "28px";
+  reset.addEventListener("click", confirmReset);
+  main.appendChild(reset);
+
+  prevB.classList.remove("hidden");
+  nextB.classList.add("hidden");
+  refreshPdfButton();
+  updateChrome();
+}
+
+function confirmReset(){
+  var ov = el("div",{class:"dlg",role:"dialog","aria-modal":"true","aria-labelledby":"dlgT"});
+  var c = el("div",{class:"card"});
+  c.appendChild(el("h3",{id:"dlgT",text:"Cancellare tutte le risposte?"}));
+  c.appendChild(el("p",{class:"note",text:"Non si possono recuperare."}));
+  var r = el("div",{class:"row"});
+  var no = el("button",{class:"ghost",type:"button",text:"Annulla"});
+  var yes = el("button",{class:"primary",type:"button",text:"Cancella"});
+  no.addEventListener("click", function(){ ov.remove(); });
+  yes.addEventListener("click", function(){ state = {step:-1,a:{}}; try { localStorage.removeItem(KEY); } catch(e){} ov.remove(); go(-1); });
+  r.appendChild(no); r.appendChild(yes); c.appendChild(r); ov.appendChild(c); document.body.appendChild(ov); no.focus();
+  ov.addEventListener("keydown", function(e){ if (e.key === "Escape") ov.remove(); });
+}
+
+/* ---------- PDF ---------- */
+function clean(s){ return String(s).replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/—|–/g,"-").replace(/…/g,"...").replace(/×/g,"x").replace(/[^\x00-\xFF]/g,""); }
+function makePdf(status){
+  if (!window.jspdf || !window.jspdf.jsPDF){ status.textContent = "Il PDF non è pronto: controlla la connessione e riprova, oppure usa WhatsApp."; return; }
+  var doc = new window.jspdf.jsPDF({unit:"mm",format:"a4"});
+  var W = 210, M = 20, CW = W - 2*M, y = 0;
+  var INK=[34,36,28], MUT=[92,95,80], OLV=[79,94,36], LINE=[221,213,196], CRM=[247,241,232];
+  function head(){
+    doc.setFillColor.apply(doc, CRM); doc.rect(0,0,W,14,"F");
+    doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor.apply(doc, INK); doc.text("L.F.O.", M, 9);
+    doc.setFont("helvetica","normal"); doc.setFontSize(8.5); doc.setTextColor.apply(doc, MUT); doc.text("Rebranding Studio Cicala  -  Fase 1, analisi", W-M, 9, {align:"right"});
+    y = 26;
+  }
+  function need(h){ if (y + h > 280){ doc.addPage(); head(); } }
+  head();
+  doc.setFont("helvetica","bold"); doc.setFontSize(24); doc.setTextColor.apply(doc, INK);
+  doc.text("Questionario di analisi", M, y); y += 8;
+  doc.setFont("helvetica","normal"); doc.setFontSize(11); doc.setTextColor.apply(doc, OLV);
+  doc.text(clean("Risposte di Fabio Cicala · "+dateIt()), M, y); y += 10;
+  STEPS.forEach(function(s){
+    need(20);
+    doc.setFont("helvetica","bold"); doc.setFontSize(13); doc.setTextColor.apply(doc, OLV);
+    doc.text(clean(s.title), M, y); y += 2.5;
+    doc.setDrawColor.apply(doc, LINE); doc.setLineWidth(0.3); doc.line(M, y, W-M, y); y += 6;
+    s.items.forEach(function(it){
+      var q = doc.splitTextToSize(clean(itemLabel(it)), CW);
+      var a = answerText(it);
+      doc.setFontSize(10.5);
+      var al = doc.splitTextToSize(clean(a || "Nessuna risposta"), CW);
+      need(q.length*5 + Math.min(al.length,3)*5 + 4);
+      doc.setFont("helvetica","bold"); doc.setTextColor.apply(doc, INK); doc.text(q, M, y); y += q.length*5;
+      doc.setFont("helvetica", a ? "normal" : "italic"); doc.setTextColor.apply(doc, a ? INK : MUT);
+      al.forEach(function(line){ need(5); doc.text(line, M, y); y += 5; });
+      y += 3.5;
+    });
+    y += 3;
+  });
+  var n = doc.getNumberOfPages();
+  for (var i=1;i<=n;i++){ doc.setPage(i); doc.setFont("helvetica","normal"); doc.setFontSize(8.5); doc.setTextColor.apply(doc, MUT); doc.text(i+" / "+n, W-M, 290, {align:"right"}); doc.text("Luis Fernandez Oliva  -  luisfernandezoliva.com", M, 290); }
+  var name = "Studio-Cicala-risposte-Fabio.pdf";
+  if (inArtifact){
+    if (!downloads){ status.textContent = "Il PDF qui non si può scaricare: usa WhatsApp o Copia le risposte."; return; }
+    downloads.save({filename:name, data:doc.output("blob")}).then(function(){ status.textContent = "PDF pronto. Mandamelo quando vuoi."; }, function(err){ status.textContent = (err && err.code === "declined") ? "Download annullato." : "Il PDF non si è scaricato: usa WhatsApp o Copia le risposte."; });
+  } else {
+    try { doc.save(name); status.textContent = "PDF scaricato. Mandamelo quando vuoi."; } catch(e){ status.textContent = "Il PDF non si è scaricato: usa WhatsApp o Copia le risposte."; }
+  }
+}
+
+/* ---------- Navigazione ---------- */
+function updateChrome(){
+  var pct = state.step < 0 ? 0 : Math.round(((state.step+1)/(TOTAL+1))*100);
+  if (state.step >= TOTAL) pct = 100;
+  document.getElementById("bar").style.width = pct+"%";
+  var cr = document.getElementById("crumb");
+  cr.textContent = state.step < 0 ? "Studio Cicala · Fase 1, analisi" : (state.step >= TOTAL ? "Riepilogo" : "Passo "+(state.step+1)+" di "+TOTAL);
+  if (!storageOk) setSaved("Non salvato: non chiudere la pagina");
+}
+function go(i){
+  state.step = i; save();
+  nextB.classList.remove("hidden");
+  if (i < 0) renderIntro(); else if (i >= TOTAL) renderSummary(); else renderStep(i);
+  window.scrollTo(0,0);
+  main.focus({preventScroll:true});
+}
+nextB.addEventListener("click", function(){
+  if (state.step < 0 && Object.keys(state.a).length && nextB.textContent.indexOf("Riprendi") === 0){
+    var last = 0; STEPS.forEach(function(s,k){ s.items.forEach(function(it){ if (answerText(it)) last = k; }); });
+    go(last); return;
+  }
+  go(state.step + 1);
+});
+prevB.addEventListener("click", function(){ go(state.step - 1); });
+
+var start = state.step; state.step = -1;
+if (start >= 0 && start <= TOTAL) go(start); else go(-1);
+})();
+</script>
+</body>
+</html>

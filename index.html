@@ -145,12 +145,25 @@ var STEPS = [
   {id:"f7", type:"fact", label:"Al nome Cicala sono legate anche la medicina generale in convenzione e una sede a Caserta che il sito indica come “solo medicina estetica”."},
   {id:"f8", type:"fact", label:"Il nome Cicala resta."}
  ]},
+ {id:"direzione", title:"La direzione che ti propongo", intro:"Quattro pilastri su cui costruire la marca, più una frase che li riassume. Dimmi se ti ci ritrovi: se qualcosa non ti somiglia, lo cambiamo ora.", items:[
+  {id:"d1", type:"fact", opts:["Mi ci ritrovo","Da cambiare"], noteLabel:"Cosa cambieresti?", label:"Autorevolezza. La competenza si dimostra con fatti verificabili: l'Albo, la tua specializzazione alla Sapienza, l'esperienza di tuo padre dagli anni Ottanta. Mai con parole come «eccellenza»."},
+  {id:"d2", type:"fact", opts:["Mi ci ritrovo","Da cambiare"], noteLabel:"Cosa cambieresti?", label:"Empatia. Calma e ascolto: il tuo modo di mettere a proprio agio chi ha paura, bambini e adulti."},
+  {id:"d3", type:"fact", opts:["Mi ci ritrovo","Da cambiare"], noteLabel:"Cosa cambieresti?", label:"Chiarezza. Tempi, passaggi e costi spiegati prima di iniziare. È la cosa che i pazienti scrivono di più su MioDottore."},
+  {id:"d4", type:"fact", opts:["Mi ci ritrovo","Da cambiare"], noteLabel:"Cosa cambieresti?", label:"Continuità. Due generazioni, una sola famiglia di pazienti, dai figli ai nonni. Il nome Cicala si rinnova, non si cancella."},
+  {id:"d5", type:"fact", opts:["Mi ci ritrovo","Da cambiare"], noteLabel:"Come la diresti tu?", label:"In una frase: «Lo studio di famiglia che spiega ogni cura prima di iniziarla.»"}
+ ]},
+ {id:"essenza", title:"L'essenza dello studio", intro:"Tre domande veloci: rispondi d'istinto, la prima cosa che ti viene.", items:[
+  {id:"e1", n:1, type:"text", label:"Completa la frase: «Un paziente esce dal mio studio sentendosi…»"},
+  {id:"e2", n:1, type:"text", label:"Cosa vorresti che dicessero di te due genitori che parlano al parco?"},
+  {id:"e3", n:1, type:"text", label:"C'è una cosa che il tuo studio non farà mai?", hint:"Un modo di comunicare, di trattare i pazienti, di vendere: qualcosa che non ti somiglia."}
+ ]},
  {id:"storia", title:"Lo studio e la sua storia", intro:"La parte più personale: come vedi lo studio e cosa vuoi portarti dietro.", items:[
   {id:"q1", n:1, type:"text", label:"In che anno è nato lo studio? C'è un ricordo o un episodio che secondo te lo rappresenta?"},
   {id:"q2", n:1, type:"text", label:"Se lo studio fosse una persona, come sarebbe? E come non vorresti mai che lo vedessero?"},
   {id:"q3", n:1, type:"text", label:"Cosa vuoi tenere della storia e dell'esperienza di tuo padre?"},
   {id:"q3b", n:1, type:"choice", label:"Vuoi che tuo padre compaia nella comunicazione del nuovo studio (sito, insegna, presentazione)?", options:["Sì, in primo piano","Sì, accanto a me","Preferisco di no","Ne parliamo"], note:"Commenti"},
   {id:"q4", n:1, type:"text", label:"Raccontami un episodio con un bambino che dica bene come lavori.", hint:"Anche piccolo: una frase, una reazione, qualcosa che ti ha detto un genitore."},
+  {id:"q4b", n:1, type:"text", label:"Quali titoli, corsi o società scientifiche vuoi mostrare, tuoi e di tuo padre?", hint:"Specializzazioni, master, associazioni: diventano le prove di competenza sul sito."},
   {id:"q5", n:1, type:"choice", label:"Come vorresti che si chiamasse lo studio?", options:["Studio Dentistico Cicala","Studio Cicala","Dottor Cicala","Non so ancora"], note:"Altro o commenti"}
  ]},
  {id:"attivita", title:"Cosa ci sarà sotto il nome Cicala", intro:"Mi serve capire cosa dovrà comunicare la nuova identità e cosa no.", items:[
@@ -160,18 +173,29 @@ var STEPS = [
   {id:"q10", n:1, type:"text", label:"Chi lavora con te in studio?", hint:"Assistenti, igienista, altri medici, la dott.ssa Grillo… Mi serve anche per divise e cartellini."}
  ]},
  {id:"pubblico", title:"Per chi è lo studio", intro:"Chi vuoi che entri dalla porta, e cosa deve sentire.", items:[
-  {id:"q11", n:1, type:"text", label:"Descrivimi il paziente ideale per te. Anzi, la famiglia ideale.", hint:"Età dei figli, dove vivono, cosa cercano, cosa li preoccupa."},
+  {id:"q11", n:1, type:"text", label:"Descrivimi il paziente ideale per te, quello che vorresti avere dieci volte. E quello che invece non vorresti.", hint:"Età, famiglia, dove vive, cosa cerca, cosa lo preoccupa."},
+  {id:"q11b", n:1, type:"choice", label:"Oggi, su 10 pazienti, quanti sono bambini?", options:["1 o meno","2–3","4–5","Più di 5","Non so"]},
   {id:"q12", n:1, type:"choice", label:"Tra tre anni, che parte dei tuoi pazienti vorresti che fossero bambini?", options:["Meno di un quarto","Circa un quarto","Circa la metà","Più della metà","Non so"]},
   {id:"q13", n:1, type:"text", label:"Quali prestazioni vorresti che lo studio facesse conoscere di più?"},
   {id:"q14", n:1, type:"choice", label:"Come vorresti che le persone percepissero lo studio?", options:["Accessibile","Nella media","Curato e di qualità","Esclusivo"], note:"Commenti"},
-  {id:"q15", n:1, type:"text", label:"Come pensi di raccontare il cambio ai pazienti storici di tuo padre? Cosa cambierà per loro?"}
+  {id:"q15", n:1, type:"text", label:"Come pensi di raccontare il cambio ai pazienti storici di tuo padre? Cosa cambierà per loro?"},
+  {id:"q15b", n:1, type:"choice", label:"Nelle famiglie che vengono da te, chi prenota di solito?", options:["La madre","Il padre","Entrambi","Altri familiari"], note:"Commenti"},
+  {id:"q15c", n:1, type:"text", label:"Da quali comuni arrivano davvero i tuoi pazienti?", hint:"Basta un'impressione: Capodrise, Marcianise, San Nicola la Strada, Caserta…"},
+  {id:"q15d", n:1, type:"choice", label:"In zona c'è un altro odontoiatra pediatrico specializzato?", options:["Sì","No","Non so"], note:"Se sì, chi e dove?"}
+ ]},
+ {id:"tono", title:"Come parla lo studio", intro:"Il tono di voce: come suonano il sito, i messaggi, le risposte alle recensioni.", items:[
+  {id:"t1", n:1, type:"text", label:"Cosa dici a un paziente che ha paura, nei primi trenta secondi?", hint:"Le tue parole esatte, anche un modo di dire: diventano la voce del sito."},
+  {id:"t2", n:1, type:"choice", label:"Sul sito diamo del tu o del lei ai pazienti?", options:["Del tu","Del lei","Del tu con gli adulti giovani, del lei con gli altri","Decidi tu"]},
+  {id:"t3", n:1, type:"choice", label:"Lo scherzo che fai con i bambini: quanto ne vuoi nella comunicazione?", options:["Niente","Un tocco, ogni tanto","Tanto, è il nostro stile"], note:"Commenti"}
  ]},
  {id:"carattere", title:"Carattere e gusti", intro:"Qui non ci sono risposte giuste: mi interessa il tuo istinto.", items:[
   {id:"g1", n:1, type:"text", label:"Tre parole per come vorresti che le persone descrivessero lo studio."},
   {id:"g2", n:1, type:"scale", label:"Dove metteresti lo studio tra questi opposti?", hint:"1 = tutto a sinistra, 5 = tutto a destra.", pairs:[["Classico","Moderno"],["Serio","Giocoso"],["Clinico","Caldo"],["Essenziale","Ricco di dettagli"],["Tranquillo","Energico"],["Tradizionale","Sorprendente"]]},
   {id:"g3", n:1, type:"choice", label:"Il bianco e l'azzurro sono…", options:["Da tenere per forza","Un punto di partenza","Sono aperto a cambiare"], note:"Colori che ti piacciono o che vuoi evitare"},
+  {id:"g3b", n:1, type:"choice", label:"Tra i blu della palette, quale vorresti come colore principale del marchio?", options:["Azzurro chiaro e luminoso","Blu profondo","Entrambi, in equilibrio"], sw:["#6CAFD9","#304D73","#96BFD9"]},
   {id:"g4", n:1, type:"multi", label:"Del logo attuale cosa vorresti tenere?", options:["Niente","Il simbolo","Le lettere","I colori","Non so"], note:"Perché?"},
-  {id:"g5", n:1, type:"text", label:"Come immagini la mascotte cicala? Che carattere ha, come si muove, come parla?"},
+  {id:"g4b", n:1, type:"choice", label:"La mascotte cicala la vuoi?", options:["Sì","No","Solo in studio, non online","Ne parliamo"]},
+  {id:"g5", n:1, type:"text", label:"Se sì: come immagini la mascotte cicala? Che carattere ha, come si muove, come parla?"},
   {id:"g6", n:1, type:"multi", label:"Dove vorresti vedere la mascotte?", options:["Sala d'attesa","Angolo bimbi","Schermi","Sito","Social","Gadget","Divise","Diplomi e attestati","Insegna"], note:"Altro"},
   {id:"g7", n:1, type:"text", label:"Ci sono marchi, negozi, locali o prodotti, anche fuori dal settore, che ti piacciono per come si presentano?", hint:"Un bar, un brand di abbigliamento, un'app, una scuola… Dimmi anche perché."}
  ]},
@@ -183,6 +207,14 @@ var STEPS = [
   {id:"a5", n:1, type:"multi", label:"Canali digitali", options:["Sito","Instagram","Facebook","TikTok","Scheda Google","MioDottore","WhatsApp Business","Newsletter"], note:"Chi pensi che li curerà?"},
   {id:"a6", n:1, type:"text", label:"Da cosa vorresti partire? Qual è la cosa più urgente?"},
   {id:"a7", n:1, type:"short", label:"Entro quando vorresti presentare il nuovo studio?", hint:"Un mese o una stagione."}
+ ]},
+ {id:"sito", title:"Il sito: le decisioni da prendere", intro:"Dopo aver visto i wireframe: queste scelte cambiano la struttura del sito. Se una non la sai ancora, segna «da valutare».", items:[
+  {id:"s1", n:1, type:"choice", label:"La struttura con quattro voci (Trattamenti e prezzi, Lo studio, Prenotazioni, Contatti) ti convince?", options:["Sì","Sì, con modifiche","No"], note:"Cosa manca o cosa cambieresti?"},
+  {id:"s2", n:1, type:"choice", label:"Medicina generale e sede di Caserta compaiono nel sito dello studio?", options:["Sì, entrambe","Solo la medicina generale","Solo la sede di Caserta","No","Da valutare"]},
+  {id:"s3", n:1, type:"choice", label:"Le prenotazioni online: teniamo l'agenda di MioDottore o usiamo un sistema nuovo?", options:["Resta MioDottore","Sistema nuovo","Da valutare"]},
+  {id:"s4", n:1, type:"choice", label:"Pubblichiamo i prezzi indicativi dei trattamenti?", options:["Sì, con le cifre","Solo durata e sedute","Non ancora","Da valutare"]},
+  {id:"s5", n:1, type:"choice", label:"Mostriamo le recensioni dei pazienti nel sito?", options:["Sì, dopo la verifica con la CAO","No","Da valutare"]},
+  {id:"s6", n:1, type:"choice", label:"Organizziamo un servizio fotografico in studio, con te, tuo padre e il team?", options:["Sì","Più avanti","Usiamo foto nostre"], note:"Quando sarebbe possibile?"}
  ]},
  {id:"concorrenza", title:"Concorrenti e riferimenti", intro:"Voglio guardare la concorrenza con i tuoi occhi. Indicami almeno 5 studi della zona che consideri concorrenti, e 1 o 2 cliniche, anche lontane, che ti piacciono.", items:[
   {id:"c1", n:1, type:"rows", label:"Gli studi che consideri concorrenti", hint:"Almeno 5. Va bene anche solo il nome e la città.", min:5, max:10, fields:[["nome","Nome dello studio"],["dove","Città, sito o pagina social"],["nota","Cosa noti di loro, in bene o in male"]]},
@@ -236,7 +268,7 @@ function renderIntro(){
   main.appendChild(el("p",{class:"eyebrow",text:"Rebranding Studio Cicala"}));
   var h = el("h1"); h.appendChild(document.createTextNode("Ciao Fabio")); h.appendChild(el("span",{class:"dot",text:"."})); main.appendChild(h);
   main.appendChild(el("p",{class:"lead",text:"Ho messo in ordine quello che ci siamo detti sul nuovo studio. Prima di passare alle idee mi servono alcune risposte da te."}));
-  main.appendChild(el("p",{class:"sub",text:"Sono 8 passi, ci vogliono circa 30 minuti. Le risposte si salvano da sole su questo telefono o computer: puoi fermarti e riprendere quando vuoi. Rispondi come parleresti a me, anche con poche parole. Se una cosa non la sai ancora, scrivilo pure. Alla fine puoi scaricare un PDF o mandarmi tutto su WhatsApp."}));
+  main.appendChild(el("p",{class:"sub",text:"Lo compiliamo insieme durante la nostra call, oppure puoi farlo da solo con calma: sono "+STEPS.length+" passi, circa 40 minuti. Le risposte si salvano da sole su questo telefono o computer: puoi fermarti e riprendere quando vuoi. Rispondi come parleresti a me, anche con poche parole. Se una cosa non la sai ancora, scrivilo pure. Alla fine puoi scaricare un PDF o mandarmi tutto su WhatsApp."}));
 
   main.appendChild(el("h3",{text:"Dove siamo"}));
   var ph = [["Analisi","Conoscere lo studio, i pazienti e gli studi della zona.",true],["Strategia","Decidere insieme chi è lo studio, per chi lavora e cosa lo rende diverso."],["Parole","Nomi, modo di comunicare, messaggi."],["Immagine","Logo, colori, caratteri, mascotte."],["Applicazioni","Insegna, sala d'attesa, divise, sito, profili online."]];
@@ -335,7 +367,10 @@ function renderItem(it){
         else x.sel = o;
         set(it.id, x);
       });
-      c.appendChild(inp); c.appendChild(el("span",{text:o})); wrap.appendChild(c);
+      var sp = el("span");
+      if (it.sw && it.sw[k]){ var dot = el("i",{"aria-hidden":"true"}); dot.style.cssText = "display:inline-block;width:20px;height:20px;border-radius:50%;margin-right:10px;border:1px solid #22241C;background:"+it.sw[k]; sp.appendChild(dot); }
+      sp.appendChild(document.createTextNode(o));
+      c.appendChild(inp); c.appendChild(sp); wrap.appendChild(c);
     });
     box.appendChild(fs);
     if (hintN) fs.appendChild(hintN);
@@ -354,13 +389,14 @@ function renderItem(it){
     var cur2 = obj(it.id);
     var row = el("div",{class:"chips"});
     var nid2 = fid+"-note";
-    var noteL = el("label",{for:nid2,class:"hint",text:"Cosa va corretto?"});
+    var OPTS = it.opts || ["Giusto","Da correggere"];
+    var noteL = el("label",{for:nid2,class:"hint",text:it.noteLabel || "Cosa va corretto?"});
     var ta = el("textarea",{id:nid2}); ta.style.minHeight = "64px"; ta.value = cur2.note || "";
-    function toggle(){ var show = obj(it.id).sel === "Da correggere"; noteL.classList.toggle("hidden", !show); ta.classList.toggle("hidden", !show); }
-    ["Giusto","Da correggere"].forEach(function(o){
+    function toggle(){ var show = obj(it.id).sel === OPTS[1]; noteL.classList.toggle("hidden", !show); ta.classList.toggle("hidden", !show); }
+    OPTS.forEach(function(o){
       var c = el("label",{class:"chip"});
       var inp = el("input",{type:"radio",name:fid,value:o}); if (cur2.sel === o) inp.checked = true;
-      inp.addEventListener("change", function(){ var x = obj(it.id); x.sel = o; set(it.id, x); toggle(); if (o === "Da correggere") ta.focus(); });
+      inp.addEventListener("change", function(){ var x = obj(it.id); x.sel = o; set(it.id, x); toggle(); if (o === OPTS[1]) ta.focus(); });
       c.appendChild(inp); c.appendChild(el("span",{text:o})); row.appendChild(c);
     });
     ta.addEventListener("input", function(){ var x = obj(it.id); x.note = ta.value; set(it.id, x); });
@@ -450,7 +486,7 @@ function answerText(it){
   if (it.type === "pair"){ var out=[]; it.fields.forEach(function(f){ if ((v[f[0]]||"").trim()) out.push(f[1]+": "+v[f[0]].trim()); }); return out.join(" · "); }
   if (it.type === "choice"){ return [v.sel||"", (v.note||"").trim()].filter(Boolean).join(" — "); }
   if (it.type === "multi"){ return [(v.sel||[]).join(", "), (v.note||"").trim()].filter(Boolean).join(" — "); }
-  if (it.type === "fact"){ if (!v.sel) return ""; return v.sel === "Giusto" ? "Giusto" : "Da correggere" + ((v.note||"").trim() ? ": "+v.note.trim() : ""); }
+  if (it.type === "fact"){ if (!v.sel) return ""; var fo = it.opts || ["Giusto","Da correggere"]; return v.sel === fo[0] ? v.sel : v.sel + ((v.note||"").trim() ? ": "+v.note.trim() : ""); }
   if (it.type === "check"){ return v.on ? "Te lo mando" : ""; }
   if (it.type === "scale"){ var o=[]; it.pairs.forEach(function(pr,pi){ if (v[pi]) o.push(pr[0]+" "+v[pi]+"/5 "+pr[1]); }); return o.join("\n"); }
   if (it.type === "rows"){ var o2=[]; (v.rows||[]).forEach(function(r,k){ if (!r) return; var parts=[]; it.fields.forEach(function(fd){ var val = r[fd[0]]; if (Array.isArray(val)) val = val.join(", "); if (val && String(val).trim()) parts.push(((fd[0]==="nome"||fd[0]==="dove")?"":fd[1]+": ")+String(val).trim()); }); if (parts.length) o2.push((k+1)+". "+parts.join(" · ")); }); return o2.join("\n"); }

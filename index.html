@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Studio Cicala · Questionario per Fabio</title>
+<title>Studio Cicala · Questionari per Fabio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Funnel+Sans:wght@300..800&display=swap" rel="stylesheet">
@@ -25,6 +25,10 @@ header.top{position:sticky;top:0;z-index:5;background:var(--cream);border-bottom
 header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:12px}
 .mark{font-family:var(--fd);font-weight:800;font-size:15px;letter-spacing:-.02em}
 .mark span{color:var(--olive)}
+a.mark{color:var(--ink);text-decoration:none}
+.hub{margin-bottom:16px}
+.hub h3{font-size:24px;margin-bottom:6px}
+.hub .count{margin:10px 0 14px}
 .crumb{font-size:13px;color:var(--mut);text-align:right}
 .progress{height:3px;background:var(--sand)}
 .progress i{display:block;height:100%;width:0;background:var(--olive);transition:width .4s var(--ease)}
@@ -112,8 +116,8 @@ button:focus-visible,.btn:focus-visible,summary:focus-visible{outline:3px solid 
 <body>
 <header class="top">
   <div class="wrap">
-    <div class="mark" aria-label="Luis Fernández Oliva">L<span>.</span>F<span>.</span>O<span>.</span></div>
-    <div class="crumb" id="crumb">Studio Cicala · Fase 1, analisi</div>
+    <a href="#" class="mark" id="home" aria-label="Torna ai questionari · L.F.O. Luis Fernández Oliva">L<span>.</span>F<span>.</span>O<span>.</span></a>
+    <div class="crumb" id="crumb">Studio Cicala · Questionari</div>
   </div>
   <div class="progress" aria-hidden="true"><i id="bar"></i></div>
 </header>
@@ -131,10 +135,7 @@ button:focus-visible,.btn:focus-visible,summary:focus-visible{outline:3px solid 
 <script>
 (function(){
 "use strict";
-var KEY = "cicala-questionario-v1";
-
-/* ---------- Contenuti ---------- */
-var STEPS = [
+var STEPS_V = [
  {id:"fatti", title:"Partiamo da quello che so", intro:"Ti scrivo quello che ho capito finora. Dimmi se è giusto o cosa va corretto.", items:[
   {id:"f1", type:"fact", label:"Lo studio l'ha fondato tuo padre Ferdinando, chirurgo e implantologo, attivo dagli anni Ottanta."},
   {id:"f2", type:"fact", label:"Lo studio passa a te, ma tuo padre Ferdinando continuerà a lavorarci, anche se meno di prima."},
@@ -232,17 +233,109 @@ var STEPS = [
  ]}
 ];
 
-(function(){ var c = 0; STEPS.forEach(function(s){ s.items.forEach(function(it){ if (it.n) it.n = ++c; }); }); })();
+var STEPS_W = [
+ {id:"fatti", title:"Partiamo da quello che abbiamo deciso", intro:"Queste regole sono già nel manuale d'identità. Dimmi se sono giuste o cosa va corretto.", items:[
+  {id:"f1", type:"fact", label:"Il nome dello studio è «Studio Cicala»."},
+  {id:"f2", type:"fact", label:"Agli adulti diamo del Lei. Con i bambini parla soprattutto la mascotte, con voce femminile e rassicurante."},
+  {id:"f3", type:"fact", label:"Lo studio parla al plurale, come «noi»: siete un team, non una persona sola."},
+  {id:"f4", type:"fact", label:"Nel sito e nei materiali non scriviamo prezzi. Sui pagamenti parliamo solo delle rate con HeyLight."},
+  {id:"f5", type:"fact", label:"Tuo padre non compare con nome e foto, ma la sua esperienza chirurgica e l'idea «da padre in figlio» fanno parte del racconto dello studio."},
+  {id:"f6", type:"fact", label:"Le parole chiave sono professionale, curato e innovativo. Da evitare: freddo e ospedaliero, infantile, da catena low cost."},
+  {id:"f7", type:"fact", label:"Nella comunicazione mettiamo in primo piano odontoiatria pediatrica e ortodonzia, senza trascurare gli adulti."}
+ ]},
+ {id:"perche", title:"Perché fate quello che fate", intro:"Le risposte più personali: da qui nasce il messaggio principale dello studio.", items:[
+  {id:"p1", n:1, type:"text", label:"Perché hai scelto di fare il dentista, e perché proprio per i bambini?"},
+  {id:"p2", n:1, type:"text", label:"Cosa vorresti cambiare nel modo in cui le persone vivono il dentista?"},
+  {id:"p3", n:1, type:"text", label:"Tra cinque anni, cosa vorresti che si dicesse dello Studio Cicala a Capodrise e Marcianise?"},
+  {id:"p4", n:1, type:"multi", label:"Quali valori per te non sono negoziabili? Scegline al massimo tre.", options:["Ascolto","Pazienza","Chiarezza","Precisione","Onestà","Puntualità","Aggiornamento continuo","Calore familiare","Rispetto dei tempi del paziente","Prevenzione"], note:"Altro, o perché li hai scelti"}
+ ]},
+ {id:"differenza", title:"Cosa vi rende diversi", intro:"Mi servono fatti concreti, non aggettivi: sono quelli che convincono una mamma a scegliervi.", items:[
+  {id:"d1", n:1, type:"text", label:"Cosa succede alla prima visita di un bambino da voi? Raccontamela passo per passo.", hint:"Dall'arrivo in sala d'attesa al saluto finale."},
+  {id:"d2", n:1, type:"text", label:"Cosa fate in modo diverso dagli altri studi della zona?", hint:"Tempi della visita, come spiegate le cure, strumenti, cosa regalate, cosa succede dopo."},
+  {id:"d3", n:1, type:"multi", label:"Quali tecnologie o strumenti avete che vale la pena raccontare?", options:["Laser","Scanner intraorale","Protesi CAD-CAM","Allineatori F22","Radiografie digitali","Sedazione cosciente","Firma digitale dei documenti"], note:"Altro"},
+  {id:"d4", n:1, type:"text", label:"Quali sono le domande e le paure che i genitori ti fanno più spesso?", hint:"Le useremo per le domande frequenti del sito e per scegliere le parole giuste."},
+  {id:"d5", n:1, type:"text", label:"E gli adulti? Cosa li preoccupa di più prima di una cura?"}
+ ]},
+ {id:"voce", title:"Come parla lo studio", intro:"Il tono di voce: come scriviamo sul sito, sui social, nei messaggi ai pazienti.", items:[
+  {id:"v1", n:1, type:"scale", label:"Dove metteresti il modo di parlare dello studio?", hint:"1 = tutto a sinistra, 5 = tutto a destra.", pairs:[["Formale","Colloquiale"],["Tecnico","Semplice"],["Serio","Ironico"],["Distaccato","Affettuoso"],["Sobrio","Entusiasta"],["Breve","Dettagliato"]]},
+  {id:"v2", n:1, type:"choice", label:"Sui social, con gli adulti, diamo comunque del Lei?", options:["Sì, del Lei ovunque","Sui social va bene il tu","Non so"], note:"Commenti"},
+  {id:"v3", n:1, type:"choice", label:"Con i bambini lo scherzo è il vostro stile. E con gli adulti?", options:["Solo un sorriso, niente battute","Un po' di leggerezza va bene","Anche con loro scherziamo"]},
+  {id:"v4", n:1, type:"choice", label:"Emoji nei post e nei messaggi?", options:["Mai","Poche e semplici","Sì, liberamente"]},
+  {id:"v5", n:1, type:"text", label:"Quali parole o frasi usi sempre con i pazienti?", hint:"Saluti, modi di dire, frasi per rassicurare."},
+  {id:"v6", n:1, type:"text", label:"C'è una frase che non vuoi mai leggere o sentire a nome dello studio?"}
+ ]},
+ {id:"parole", title:"Le parole dello studio", intro:"Le parole che useremo spesso, fino a farle diventare vostre, e quelle da evitare.", items:[
+  {id:"w1", n:1, type:"multi", label:"Quali parole senti vicine allo studio?", options:["Cura","Serenità","Fiducia","Famiglia","Sorriso","Precisione","Delicatezza","Tempo","Ascolto","Crescere","Prevenzione","Leggerezza","Esperienza","Futuro"], note:"Altre parole tue"},
+  {id:"w2", n:1, type:"multi", label:"Quali parole non vorresti mai leggere?", options:["Indolore","Low cost","Offerta","Miracoloso","Perfetto","Lusso","Eccellenza","Sconto","Garantito","Paura"], note:"Altre"},
+  {id:"w3", n:1, type:"choice", label:"Per le cure dei bambini preferisci dire…", options:["Odontoiatria pediatrica","Dentista per bambini","Tutte e due: il termine tecnico e quello semplice"]},
+  {id:"w4", n:1, type:"choice", label:"Per la pulizia dal dentista preferisci dire…", options:["Igiene orale professionale","Pulizia dei denti","Tutte e due"]},
+  {id:"w5", n:1, type:"choice", label:"Per gli allineatori preferisci dire…", options:["Allineatori trasparenti","Apparecchio invisibile","Tutte e due"]}
+ ]},
+ {id:"slogan", title:"La frase accanto al logo", intro:"Lo slogan dello studio: una frase breve che accompagnerà il logo per anni. Non la scegliamo ora, mi serve capire la direzione.", items:[
+  {id:"s1", n:1, type:"choice", label:"Prima di tutto deve parlare di…", options:["Famiglia e generazioni","Bambini sereni","Competenza e cura","Futuro e innovazione","Il territorio"], note:"Commenti"},
+  {id:"s2", n:1, type:"multi", label:"Quali di queste direzioni ti piacciono? Sono esempi, non frasi definitive.", options:["«Da padre in figlio, da genitore a bambino»","«Cure serene per tutta la famiglia»","«Il dentista dove si torna volentieri»","«Ogni cura spiegata prima di iniziare»","«Cresciamo insieme ai vostri sorrisi»"], note:"Una frase tua, anche solo abbozzata"},
+  {id:"s3", n:1, type:"text", label:"Ci sono slogan di altri marchi, anche fuori dal settore, che ti sono rimasti in testa? Perché?"}
+ ]},
+ {id:"storia", title:"Il racconto dello studio", intro:"Le storie vere sono il modo migliore per farsi ricordare.", items:[
+  {id:"r1", n:1, type:"text", label:"Qual è il tuo primo ricordo dello studio di tuo padre?", hint:"Anche da bambino: un odore, un rumore, una persona, un paziente."},
+  {id:"r2", n:1, type:"text", label:"Cosa hai imparato da lui che porti nel tuo modo di lavorare?"},
+  {id:"r3", n:1, type:"choice", label:"La storia del bambino che all'inizio non voleva sedersi e alla fine ti ha abbracciato: possiamo raccontarla, senza nomi, sul sito o sui social?", options:["Sì","Sì, ma solo in studio o a voce","Preferisco di no"]}
+ ]},
+ {id:"mascotte", title:"La voce della cicala", intro:"Il disegno lo stiamo facendo. Qui mi serve capire come parla.", items:[
+  {id:"k1", n:1, type:"short", label:"Ha un nome? Se non ce l'ha ancora, ne hai in mente qualcuno?"},
+  {id:"k2", n:1, type:"text", label:"Come saluta i bambini? Scrivimi una frase che direbbe lei."},
+  {id:"k3", n:1, type:"choice", label:"A quali bambini si rivolge soprattutto?", options:["3–6 anni","6–10 anni","Da 3 a 12 anni, tutti","Non so"]},
+  {id:"k4", n:1, type:"text", label:"C'è qualcosa che la mascotte non deve mai fare o dire?"}
+ ]},
+ {id:"pratico", title:"Informazioni pratiche", intro:"Le cose che compariranno nel sito, sui social e nei materiali.", items:[
+  {id:"i1", n:1, type:"rows", label:"Il team da presentare", hint:"Nome, ruolo e, se vuoi, una riga su di lui o lei. Anche l'ortodontista e l'ASO.", min:3, show:4, max:8, fields:[["nome","Nome e cognome"],["ruolo","Ruolo"],["nota","Una riga su di lui o lei (facoltativa)"]]},
+  {id:"i2", n:1, type:"choice", label:"Le convenzioni (UniSalute, Previmedical, Fondo Metasalute) le mostriamo?", options:["Sì, nel sito","Solo se il paziente chiede","No"], note:"Ce ne sono altre?"},
+  {id:"i3", n:1, type:"text", label:"Le urgenze: come le gestite? Cosa possiamo promettere a chi ha dolore?", hint:"Per esempio: «la richiamiamo in giornata». Scriviamo solo quello che riuscite davvero a mantenere."},
+  {id:"i4", n:1, type:"choice", label:"Su MioDottore la visita di controllo è gratuita. Lo diciamo anche nel sito?", options:["Sì, in evidenza","Sì, ma senza enfasi","No"]},
+  {id:"i5", n:1, type:"short", label:"L'email dello studio", hint:"Se non c'è ancora, scrivi che va creata."},
+  {id:"i6", n:1, type:"text", label:"Gli orari di apertura"},
+  {id:"i7", n:1, type:"short", label:"I nomi dei profili social, se esistono", hint:"Instagram, Facebook, WhatsApp Business."}
+ ]},
+ {id:"concorrenza", title:"Concorrenti", intro:"È l'unica parte rimasta vuota nel primo questionario e mi serve per scegliere parole che vi distinguano. Bastano nome e città.", items:[
+  {id:"c1", n:1, type:"rows", label:"Gli studi della zona che consideri concorrenti", hint:"Almeno 3. Va bene anche solo il nome e la città.", min:3, show:4, max:10, fields:[["nome","Nome dello studio"],["dove","Città, sito o pagina social"],["nota","Cosa noti di loro, in bene o in male"]]},
+  {id:"c3", n:1, type:"text", label:"C'è uno studio a cui proprio non vorresti somigliare? Perché?"},
+  {id:"z1", n:1, type:"text", label:"C'è altro che vuoi dirmi?"}
+ ]}
+];
+
+function numberSteps(arr){ var c = 0; arr.forEach(function(s){ s.items.forEach(function(it){ if (it.n) it.n = ++c; }); }); }
+numberSteps(STEPS_V); numberSteps(STEPS_W);
+
+var QS = {
+  visiva:{id:"visiva", key:"cicala-questionario-v1", steps:STEPS_V, num:"1",
+    name:"Questionario per l'identità visiva", crumb:"Studio Cicala · Identità visiva",
+    desc:"Lo studio, i pazienti, i gusti, il logo, i colori, dove vivrà l'identità.",
+    pdfHead:"Rebranding Studio Cicala  -  Identita visiva", pdfTitle:"Identita visiva",
+    plainTitle:"STUDIO CICALA — Questionario per l'identità visiva", file:"Studio-Cicala-identita-visiva-risposte-Fabio.pdf"},
+  verbale:{id:"verbale", key:"cicala-identita-verbale-v1", steps:STEPS_W, num:"2",
+    name:"Questionario per l'identità verbale", crumb:"Studio Cicala · Identità verbale",
+    desc:"Come parla lo studio: valori, tono di voce, parole chiave, la frase accanto al logo, la mascotte.",
+    pdfHead:"Rebranding Studio Cicala  -  Identita verbale", pdfTitle:"Identita verbale",
+    plainTitle:"STUDIO CICALA — Questionario per l'identità verbale", file:"Studio-Cicala-identita-verbale-risposte-Fabio.pdf"}
+};
+var ORDER = ["visiva","verbale"];
 
 /* ---------- Stato ---------- */
+var Q = null, KEY = null, STEPS = [], TOTAL = 0;
 var state = {step:-1, a:{}};
 var storageOk = true;
-try { var raw = localStorage.getItem(KEY); if (raw) { var p = JSON.parse(raw); if (p && typeof p === "object") { state.a = p.a || {}; state.step = typeof p.step === "number" ? p.step : -1; } } } catch(e){ storageOk = false; }
+function load(key){
+  var st = {step:-1, a:{}};
+  try { var raw = localStorage.getItem(key); if (raw) { var p = JSON.parse(raw); if (p && typeof p === "object") { st.a = p.a || {}; st.step = typeof p.step === "number" ? p.step : -1; } } } catch(e){ storageOk = false; }
+  return st;
+}
 var saveTimer = null;
 function save(){
+  if (!KEY) return;
+  var k = KEY, data = JSON.stringify(state);
   clearTimeout(saveTimer);
   saveTimer = setTimeout(function(){
-    try { localStorage.setItem(KEY, JSON.stringify(state)); setSaved("Salvato su questo dispositivo"); } catch(e){ storageOk = false; setSaved(""); }
+    try { localStorage.setItem(k, data); setSaved("Salvato su questo dispositivo"); } catch(e){ storageOk = false; setSaved(""); }
   }, 300);
 }
 function setSaved(t){ document.getElementById("saved").textContent = t; }
@@ -260,10 +353,51 @@ function obj(id){ var v = state.a[id]; return (v && typeof v === "object") ? v :
 
 var main = document.getElementById("main");
 var prevB = document.getElementById("prev"), nextB = document.getElementById("next");
-var TOTAL = STEPS.length;
+
+/* ---------- Pagina iniziale ---------- */
+function progressOf(q){
+  var keep = state; state = load(q.key);
+  var tot = 0, done = 0;
+  q.steps.forEach(function(s){ s.items.forEach(function(it){ tot++; if (answerText(it)) done++; }); });
+  state = keep; return {tot:tot, done:done};
+}
+function renderHub(){
+  Q = null; KEY = null; STEPS = []; TOTAL = 0; state = {step:-1, a:{}};
+  document.getElementById("nav").classList.add("hidden");
+  main.innerHTML = "";
+  main.appendChild(el("p",{class:"eyebrow",text:"Rebranding Studio Cicala"}));
+  var h = el("h1"); h.appendChild(document.createTextNode("Ciao Fabio")); h.appendChild(el("span",{class:"dot",text:"."})); main.appendChild(h);
+  main.appendChild(el("p",{class:"lead",text:"Qui trovi i questionari del progetto. Ognuno si salva da solo su questo telefono o computer: puoi compilarli, interromperli e riprenderli quando vuoi."}));
+  ORDER.forEach(function(id){
+    var q = QS[id], pr = progressOf(q);
+    var card = el("section",{class:"card hub"});
+    card.appendChild(el("p",{class:"eyebrow",text:"Sezione "+q.num}));
+    card.appendChild(el("h3",{text:q.name}));
+    card.appendChild(el("p",{class:"note",text:q.desc}));
+    var st = pr.done === 0 ? "Da iniziare" : (pr.done >= pr.tot ? "Completato" : pr.done+(pr.done === 1 ? " risposta su " : " risposte su ")+pr.tot);
+    card.appendChild(el("p",{class:"count",text:q.steps.length+" passi · "+st}));
+    var b = el("button",{class:pr.done ? "ghost" : "primary",type:"button",text:pr.done ? "Apri e continua" : "Inizia"});
+    b.addEventListener("click", function(){ openQ(id); });
+    card.appendChild(b);
+    main.appendChild(card);
+  });
+  var sign = el("p",{class:"sign"}); sign.appendChild(document.createTextNode("Un abbraccio, Luis")); var dt = el("span",{class:"dot",text:"."}); dt.style.color = "var(--olive)"; sign.appendChild(dt); main.appendChild(sign);
+  document.getElementById("bar").style.width = "0%";
+  document.getElementById("crumb").textContent = "Studio Cicala · Questionari";
+  setSaved("");
+  window.scrollTo(0,0); main.focus({preventScroll:true});
+}
+function openQ(id){
+  Q = QS[id]; KEY = Q.key; STEPS = Q.steps; TOTAL = STEPS.length;
+  state = load(KEY);
+  document.getElementById("nav").classList.remove("hidden");
+  setSaved("");
+  go(-1);
+}
 
 /* ---------- Intro ---------- */
-function renderIntro(){
+function renderIntro(){ if (Q.id === "visiva") renderIntroV(); else renderIntroW(); }
+function renderIntroV(){
   main.innerHTML = "";
   main.appendChild(el("p",{class:"eyebrow",text:"Rebranding Studio Cicala"}));
   var h = el("h1"); h.appendChild(document.createTextNode("Ciao Fabio")); h.appendChild(el("span",{class:"dot",text:"."})); main.appendChild(h);
@@ -294,7 +428,41 @@ function renderIntro(){
     "Google: una sola recensione, 4 stelle."
   ]));
   var hasAny = Object.keys(state.a).length > 0;
-  prevB.classList.add("hidden");
+  prevB.classList.remove("hidden"); prevB.textContent = "Tutti i questionari";
+  nextB.textContent = hasAny ? "Riprendi da dove eri" : "Iniziamo";
+  updateChrome();
+}
+function renderIntroW(){
+  main.innerHTML = "";
+  main.appendChild(el("p",{class:"eyebrow",text:"Rebranding Studio Cicala"}));
+  var h = el("h1"); h.appendChild(document.createTextNode("Ciao Fabio")); h.appendChild(el("span",{class:"dot",text:"."})); main.appendChild(h);
+  main.appendChild(el("p",{class:"lead",text:"L'immagine dello studio è pronta: logo, colori, caratteri e regole sono nel manuale d'identità. Ora passiamo alle parole: come parla lo studio, cosa racconta, quale frase accompagnerà il logo."}));
+  main.appendChild(el("p",{class:"sub",text:"Sono 10 passi, ci vogliono circa 25 minuti. Le risposte si salvano da sole su questo telefono o computer: puoi fermarti e riprendere quando vuoi. Rispondi come parleresti a me, anche con poche parole. Se una cosa non la sai ancora, scrivilo pure. Alla fine puoi scaricare un PDF o mandarmi tutto su WhatsApp."}));
+
+  main.appendChild(el("h3",{text:"Dove siamo"}));
+  var ph = [["Analisi","Conoscere lo studio, i pazienti e la zona. Fatto."],["Strategia","Chi è lo studio, per chi lavora, cosa lo rende diverso. Fatto."],["Immagine","Logo, colori, caratteri, foto, regole della mascotte. Fatto."],["Parole","Tono di voce, parole chiave, frase accanto al logo, testi del sito.",true],["Applicazioni","Sito, social, insegna, sala d'attesa, divise."]];
+  var ol = el("ol",{class:"phases"});
+  ph.forEach(function(x){ var li = el("li",{class:x[2]?"now":""}); var d = el("div"); var b = el("b",{text:x[0]}); if (x[2]) b.appendChild(el("span",{class:"tag",text:"ora"})); d.appendChild(b); d.appendChild(el("small",{text:x[1]})); li.appendChild(d); ol.appendChild(li); });
+  main.appendChild(ol);
+
+  main.appendChild(el("h3",{text:"Cosa abbiamo già"}));
+  main.appendChild(el("p",{class:"note",text:"Non ti richiedo quello che mi hai già detto nel questionario per l'identità visiva. Qui sotto trovi un riassunto."}));
+  main.appendChild(details("Quello che mi hai già detto",[
+    "Un paziente esce dallo studio sentendosi rassicurato. Lo studio non vedrà mai i pazienti come numeri.",
+    "Quattro pilastri: autorevolezza, empatia, chiarezza, da padre in figlio.",
+    "A chi ha paura dici che si può fermare in qualsiasi momento: aiuti chi si vuole far aiutare, non obblighi nessuno.",
+    "Con i bambini lo scherzo è il vostro stile. Con gli adulti si dà del Lei.",
+    "A prenotare è quasi sempre la mamma; i pazienti arrivano soprattutto da Capodrise e Marcianise.",
+    "Prestazioni da far conoscere di più: odontoiatria pediatrica e ortodonzia."
+  ]));
+  main.appendChild(details("Cosa contiene il manuale d'identità",[
+    "Il logo attuale, ridisegnato in vettoriale, con le sue versioni e gli usi vietati.",
+    "Colori: bianco, Azzurro Mykonos, Azzurro Cicala, Blu Notte, Grigio Orso Polare e un giallo chiaro solo per il mondo bambini.",
+    "Caratteri: Fraunces per i titoli, Atkinson Hyperlegible Next per i testi.",
+    "Foto vere, senza attori; la mascotte solo dove si parla ai bambini."
+  ]));
+  var hasAny = Object.keys(state.a).length > 0;
+  prevB.classList.remove("hidden"); prevB.textContent = "Tutti i questionari";
   nextB.textContent = hasAny ? "Riprendi da dove eri" : "Iniziamo";
   updateChrome();
 }
@@ -312,7 +480,7 @@ function renderStep(i){
   var h = el("h2"); h.appendChild(document.createTextNode(s.title)); h.appendChild(el("span",{class:"dot",text:"."})); main.appendChild(h);
   main.appendChild(el("p",{class:"sub",text:s.intro}));
   s.items.forEach(function(it){ main.appendChild(renderItem(it)); });
-  prevB.classList.remove("hidden");
+  prevB.classList.remove("hidden"); prevB.textContent = "Indietro";
   nextB.textContent = i === TOTAL-1 ? "Rivedi e invia" : "Avanti";
   updateChrome();
 }
@@ -495,7 +663,7 @@ function answerText(it){
 function itemLabel(it){ return (it.n ? it.n+". " : "") + it.label; }
 function dateIt(){ try { return new Date().toLocaleDateString("it-IT",{day:"numeric",month:"long",year:"numeric"}); } catch(e){ return new Date().toISOString().slice(0,10); } }
 function plainText(){
-  var L = ["STUDIO CICALA — Questionario di analisi","Risposte di Fabio Cicala · "+dateIt(),""];
+  var L = [Q.plainTitle,"Risposte di Fabio Cicala · "+dateIt(),""];
   STEPS.forEach(function(s){
     L.push("== "+s.title.toUpperCase()+" ==");
     s.items.forEach(function(it){ var a = answerText(it); L.push("• "+itemLabel(it)); L.push("  "+(a || "(nessuna risposta)")); });
@@ -559,7 +727,7 @@ function renderSummary(){
   reset.addEventListener("click", confirmReset);
   main.appendChild(reset);
 
-  prevB.classList.remove("hidden");
+  prevB.classList.remove("hidden"); prevB.textContent = "Indietro";
   nextB.classList.add("hidden");
   refreshPdfButton();
   updateChrome();
@@ -589,13 +757,13 @@ function makePdf(status){
   function head(){
     doc.setFillColor.apply(doc, CRM); doc.rect(0,0,W,14,"F");
     doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor.apply(doc, INK); doc.text("L.F.O.", M, 9);
-    doc.setFont("helvetica","normal"); doc.setFontSize(8.5); doc.setTextColor.apply(doc, MUT); doc.text("Rebranding Studio Cicala  -  Fase 1, analisi", W-M, 9, {align:"right"});
+    doc.setFont("helvetica","normal"); doc.setFontSize(8.5); doc.setTextColor.apply(doc, MUT); doc.text(Q.pdfHead, W-M, 9, {align:"right"});
     y = 26;
   }
   function need(h){ if (y + h > 280){ doc.addPage(); head(); } }
   head();
   doc.setFont("helvetica","bold"); doc.setFontSize(24); doc.setTextColor.apply(doc, INK);
-  doc.text("Questionario di analisi", M, y); y += 8;
+  doc.text(Q.pdfTitle, M, y); y += 8;
   doc.setFont("helvetica","normal"); doc.setFontSize(11); doc.setTextColor.apply(doc, OLV);
   doc.text(clean("Risposte di Fabio Cicala · "+dateIt()), M, y); y += 10;
   STEPS.forEach(function(s){
@@ -618,7 +786,7 @@ function makePdf(status){
   });
   var n = doc.getNumberOfPages();
   for (var i=1;i<=n;i++){ doc.setPage(i); doc.setFont("helvetica","normal"); doc.setFontSize(8.5); doc.setTextColor.apply(doc, MUT); doc.text(i+" / "+n, W-M, 290, {align:"right"}); doc.text("Luis Fernandez Oliva  -  luisfernandezoliva.com", M, 290); }
-  var name = "Studio-Cicala-risposte-Fabio.pdf";
+  var name = Q.file;
   if (inArtifact){
     if (!downloads){ status.textContent = "Il PDF qui non si può scaricare: usa WhatsApp o Copia le risposte."; return; }
     downloads.save({filename:name, data:doc.output("blob")}).then(function(){ status.textContent = "PDF pronto. Mandamelo quando vuoi."; }, function(err){ status.textContent = (err && err.code === "declined") ? "Download annullato." : "Il PDF non si è scaricato: usa WhatsApp o Copia le risposte."; });
@@ -633,7 +801,7 @@ function updateChrome(){
   if (state.step >= TOTAL) pct = 100;
   document.getElementById("bar").style.width = pct+"%";
   var cr = document.getElementById("crumb");
-  cr.textContent = state.step < 0 ? "Studio Cicala · Fase 1, analisi" : (state.step >= TOTAL ? "Riepilogo" : "Passo "+(state.step+1)+" di "+TOTAL);
+  cr.textContent = state.step < 0 ? Q.crumb : (state.step >= TOTAL ? "Riepilogo" : "Passo "+(state.step+1)+" di "+TOTAL);
   if (!storageOk) setSaved("Non salvato: non chiudere la pagina");
 }
 function go(i){
@@ -650,10 +818,10 @@ nextB.addEventListener("click", function(){
   }
   go(state.step + 1);
 });
-prevB.addEventListener("click", function(){ go(state.step - 1); });
+prevB.addEventListener("click", function(){ if (state.step < 0) renderHub(); else go(state.step - 1); });
+document.getElementById("home").addEventListener("click", function(e){ e.preventDefault(); renderHub(); });
 
-var start = state.step; state.step = -1;
-if (start >= 0 && start <= TOTAL) go(start); else go(-1);
+renderHub();
 })();
 </script>
 </body>
